@@ -87,6 +87,12 @@ const routes = [
         meta: { title: '结算单详情', icon: 'Document', roles: ['FINANCE', 'MERCHANT', 'RESIDENT'] }
       },
       {
+        path: 'dispute/detail/:id',
+        name: 'DisputeDetail',
+        component: () => import('@/views/dispute/DisputeDetail.vue'),
+        meta: { title: '争议详情', icon: 'Document', roles: ['FINANCE', 'MERCHANT', 'RESIDENT'] }
+      },
+      {
         path: 'room',
         name: 'Room',
         component: () => import('@/views/room/RoomList.vue'),

@@ -205,6 +205,32 @@ CREATE TABLE apt_fee_item (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='费用明细表';
 
 -- ============================================
+-- 退租争议表
+-- ============================================
+DROP TABLE IF EXISTS apt_dispute;
+CREATE TABLE apt_dispute (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    checkin_id BIGINT NOT NULL COMMENT '入住单ID',
+    deduction_id BIGINT COMMENT '关联扣款ID',
+    resident_id BIGINT NOT NULL COMMENT '住户ID',
+    dispute_type VARCHAR(50) NOT NULL COMMENT '争议类型: DEDUCTION-扣款争议, FEE-费用争议, DAMAGE-损坏争议, OTHER-其他',
+    content TEXT NOT NULL COMMENT '争议内容',
+    evidence_urls VARCHAR(2000) COMMENT '证据图片URL(多个逗号分隔)',
+    status VARCHAR(20) DEFAULT 'PENDING' COMMENT '状态: PENDING-待审核, REVIEWING-审核中, APPROVED-已通过, REJECTED-已驳回',
+    reviewer_id BIGINT COMMENT '审核人ID',
+    review_opinion TEXT COMMENT '审核意见',
+    adjusted_amount DECIMAL(12,2) COMMENT '调整后金额',
+    review_time DATETIME COMMENT '审核时间',
+    deleted TINYINT DEFAULT 0 COMMENT '逻辑删除: 0-未删除, 1-已删除',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (id),
+    KEY idx_checkin_id (checkin_id),
+    KEY idx_deduction_id (deduction_id),
+    KEY idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='退租争议表';
+
+-- ============================================
 -- 初始化数据
 -- ============================================
 
